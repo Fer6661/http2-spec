@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2021-02-23T00:45:19.625142+00:00",
+  "timestamp": "2021-02-25T00:45:42.905234+00:00",
   "repo": "httpwg/http2-spec",
   "labels": [
     {
@@ -18940,9 +18940,17 @@
       "labels": [],
       "body": "QUIC includes the following statement:\r\n\r\n>  In particular, an endpoint MAY use any applicable error code when it detects an error condition; a generic error code (such as PROTOCOL_VIOLATION or INTERNAL_ERROR) can always be used in place of specific error codes.\r\n\r\nI like this.  (No accident.  I wrote it.)\r\n\r\nShould HTTP/2 include a similar statement?  We have PROTOCOL_ERROR, which has a definition compatible with this statement, so I guess we're already there on as far as allowing a generic code goes.  Any sense in saying it explicitly?",
       "createdAt": "2021-02-22T22:52:01Z",
-      "updatedAt": "2021-02-22T22:52:01Z",
+      "updatedAt": "2021-02-23T08:08:35Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "Lukasa",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Yeah, I think this is sensible text to include.",
+          "createdAt": "2021-02-23T08:08:35Z",
+          "updatedAt": "2021-02-23T08:08:35Z"
+        }
+      ]
     }
   ],
   "pulls": [
@@ -31170,13 +31178,13 @@
       "labels": [],
       "body": "HTTP/1.1 to HTTP/2 Upgrade was never widely deployed and has no\r\nparticular defenders. This change removes the text explaining and\r\ndefining the mechanism.\r\n\r\nResolves #772.\r\n\r\nThis change still requires discussion on the mailing list.",
       "createdAt": "2021-02-17T17:50:19Z",
-      "updatedAt": "2021-02-18T10:18:34Z",
+      "updatedAt": "2021-02-23T23:01:14Z",
       "baseRepository": "httpwg/http2-spec",
       "baseRefName": "main",
-      "baseRefOid": "dc996f14ecd9a6ff86cda67c5651dc098f7054cf",
+      "baseRefOid": "8817a822817063daa3fbd8cc6b5ef16155c42341",
       "headRepository": "Lukasa/http2-spec",
       "headRefName": "cb-remove-upgrade",
-      "headRefOid": "fb4eb4b6f938e380b855a11ad817116dcde38469",
+      "headRefOid": "51bc9063bc68d584a81a0c46ef906d0bb960e4e0",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -31188,6 +31196,13 @@
           "body": "@martinthomson I've returned the two IANA registry entries and pointed them backwards at RFC 7540, as the sections that define those fields were removed from this document. I'm not actually sure that's the right IETF process there. Happy to take guidance as to what I should be doing instead (e.g. putting in a pair of dummy sections saying that the field and token don't have semantics any longer and referring to those instead).",
           "createdAt": "2021-02-18T08:58:41Z",
           "updatedAt": "2021-02-18T08:58:41Z"
+        },
+        {
+          "author": "Lukasa",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Ok, I've replaced the registrations with tombstones, this is ready for another go around.",
+          "createdAt": "2021-02-23T11:02:06Z",
+          "updatedAt": "2021-02-23T11:02:06Z"
         }
       ],
       "reviews": [
@@ -31207,25 +31222,25 @@
               "originalPosition": 6,
               "body": "Probably something for a different change, but \"discovery\" isn't really right.  The use of HTTP/2 for \"https\" is negotiated.",
               "createdAt": "2021-02-17T21:18:21Z",
-              "updatedAt": "2021-02-18T08:57:32Z"
+              "updatedAt": "2021-02-23T11:15:59Z"
             },
             {
               "originalPosition": 157,
               "body": "```suggestion\r\n          application data octets of a connection.\r\n```\r\n\r\nMight as well make the statement general :)",
               "createdAt": "2021-02-17T21:36:39Z",
-              "updatedAt": "2021-02-18T08:57:32Z"
+              "updatedAt": "2021-02-23T11:15:59Z"
             },
             {
               "originalPosition": 190,
               "body": "I think that Alexey's point here about marking this obsoleted is worthwhile.",
               "createdAt": "2021-02-17T21:38:57Z",
-              "updatedAt": "2021-02-18T08:57:32Z"
+              "updatedAt": "2021-02-23T11:15:59Z"
             },
             {
               "originalPosition": 229,
               "body": "As this registry doesn't have a status column, we can leave this untouched, with the reference to 7540 left alone.",
               "createdAt": "2021-02-17T21:40:01Z",
-              "updatedAt": "2021-02-18T08:57:32Z"
+              "updatedAt": "2021-02-23T11:15:59Z"
             }
           ]
         },
@@ -31245,15 +31260,28 @@
               "originalPosition": 186,
               "body": "Up there^^ probably best to say that this updates it to obsolete it.  I think that you could just say something like \"this marks the header field as as obsoleted\" and avoid the registration block.  A backward reference to its original definition is probably all you need in addition to that.",
               "createdAt": "2021-02-18T10:17:23Z",
-              "updatedAt": "2021-02-18T10:18:34Z"
+              "updatedAt": "2021-02-23T11:15:59Z"
             },
             {
               "originalPosition": 209,
               "body": "This section can probably be a tombstone only.  \"Previous versions (see X of 7540) registered an upgrade token, but this capability has been removed; see Section X.\"",
               "createdAt": "2021-02-18T10:18:28Z",
-              "updatedAt": "2021-02-18T10:18:34Z"
+              "updatedAt": "2021-02-23T11:15:59Z"
             }
           ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NTk2ODc1MzUz",
+          "commit": {
+            "abbreviatedOid": "51bc906"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2021-02-23T23:01:10Z",
+          "updatedAt": "2021-02-23T23:01:10Z",
+          "comments": []
         }
       ]
     },
@@ -31394,6 +31422,46 @@
           "body": "I think making this right is a good idea, notwithstanding the questions about the pursuit of ASCII. It\u2019d be nice if the IETF could make its way into 1995.",
           "createdAt": "2021-02-18T07:16:21Z",
           "updatedAt": "2021-02-18T07:16:21Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 825,
+      "id": "MDExOlB1bGxSZXF1ZXN0NTc4NDEzMDYz",
+      "title": "Update of \"Prohibited TLS 1.2 Cipher Suites\"",
+      "url": "https://github.com/httpwg/http2-spec/pull/825",
+      "state": "OPEN",
+      "author": "emanjon",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "RFC 7540 is an awesome TLS 1.2 profile, a often recomment it for that purpose. \r\n\r\nAs far as I know, there has been 4 new ciphersuites (2 for TLS 1.2 and 2 for TLS 1.3) and 1 PskKeyExchangeMode violating the null and ephemeral key exchange requirements mandated by RFC 7540.",
+      "createdAt": "2021-02-23T12:32:34Z",
+      "updatedAt": "2021-02-23T23:10:33Z",
+      "baseRepository": "httpwg/http2-spec",
+      "baseRefName": "main",
+      "baseRefOid": "8817a822817063daa3fbd8cc6b5ef16155c42341",
+      "headRepository": "emanjon/http2-spec",
+      "headRefName": "patch-1",
+      "headRefOid": "6710a1046c89707a4f53f76b3ba13faf9f2dae76",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NTk2ODgwNDQw",
+          "commit": {
+            "abbreviatedOid": "6710a10"
+          },
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "Unfortunately, we cannot add to the list of prohibited cipher suites without also defining a new ALPN.  A client that is aware of these new requirements and forced to offer these suites with potential use with non-h2 ALPN values cannot assume that a server is also aware of these new requirements.  If the server is only compliant with RFC 7540 it won't know that these suites are bad (well, aside from that being obvious).  A client can only use INADEQUATE_SECURITY if it knows that the server knows that the choice of cipher suite is wrong.\r\n\r\nWe knew this to be a limitation of the profile when we built it.  That's why it says:\r\n\r\n> Additional cipher suites with these properties could be defined; these would not be explicitly prohibited.",
+          "createdAt": "2021-02-23T23:10:33Z",
+          "updatedAt": "2021-02-23T23:10:33Z",
           "comments": []
         }
       ]
