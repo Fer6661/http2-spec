@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2021-02-25T00:45:42.905234+00:00",
+  "timestamp": "2021-03-04T00:46:25.782815+00:00",
   "repo": "httpwg/http2-spec",
   "labels": [
     {
@@ -31388,7 +31388,7 @@
       "labels": [],
       "body": "That is, in text we added.\r\n\r\nI have an open question to rfc-interest@ regarding correcting the spelling of author names in references.  It's pretty clear [what Bodo thinks](https://www.bmoeller.de/) about the mangling we have done to his name in pursuit of ASCII and I'd like to correct that.  I didn't see any others that would appear in the final document (Herv\u00e9 is there too, but only first initials survive).\r\n\r\nCloses #791.",
       "createdAt": "2021-02-18T05:01:47Z",
-      "updatedAt": "2021-02-22T22:48:13Z",
+      "updatedAt": "2021-03-02T06:17:50Z",
       "baseRepository": "httpwg/http2-spec",
       "baseRefName": "main",
       "baseRefOid": "dc996f14ecd9a6ff86cda67c5651dc098f7054cf",
