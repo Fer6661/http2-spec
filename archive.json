@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2021-03-04T00:46:25.782815+00:00",
+  "timestamp": "2021-03-07T00:50:03.865762+00:00",
   "repo": "httpwg/http2-spec",
   "labels": [
     {
@@ -18949,6 +18949,37 @@
           "body": "Yeah, I think this is sensible text to include.",
           "createdAt": "2021-02-23T08:08:35Z",
           "updatedAt": "2021-02-23T08:08:35Z"
+        }
+      ]
+    },
+    {
+      "number": 826,
+      "id": "MDU6SXNzdWU4MjE3NDM3NDc=",
+      "title": "Tweaking registry policies",
+      "url": "https://github.com/httpwg/http2-spec/issues/826",
+      "state": "OPEN",
+      "author": "mnot",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "There's currently a slight divergence in IANA policies between h2 and h3:\r\n\r\n- Frame Types: IETF Review, Experimental Use (h2) / Standards Action, Specification Required (h3)\r\n- Settings: Expert Review, Experimental Use / Standards Action, Specification Required\r\n- Error Codes: Expert Review / Standards Action, Specification Required\r\n\r\nIf we can align these with low pain, it might be worthwhile; e.g., can we get rid of the experimental use areas and upgrade Expert Review to Specification Required?",
+      "createdAt": "2021-03-04T04:36:24Z",
+      "updatedAt": "2021-03-04T06:01:22Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "body": "h3 requires only Expert Review for provisional registrations, which makes the two basically the same.  Do we want to add provisional registrations to h2?\r\n\r\nThe experimental space can go, I think, but it might pay to check if anyone is using it first.",
+          "createdAt": "2021-03-04T05:45:52Z",
+          "updatedAt": "2021-03-04T05:45:52Z"
+        },
+        {
+          "author": "mnot",
+          "authorAssociation": "MEMBER",
+          "body": "+1, I think we can advertise in the WG and maybe one or two other places and that'd be sufficient, absent pushback.",
+          "createdAt": "2021-03-04T06:01:22Z",
+          "updatedAt": "2021-03-04T06:01:22Z"
         }
       ]
     }
