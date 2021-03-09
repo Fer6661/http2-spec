@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2021-03-07T00:50:03.865762+00:00",
+  "timestamp": "2021-03-09T00:47:22.266078+00:00",
   "repo": "httpwg/http2-spec",
   "labels": [
     {
@@ -18980,6 +18980,51 @@
           "body": "+1, I think we can advertise in the WG and maybe one or two other places and that'd be sufficient, absent pushback.",
           "createdAt": "2021-03-04T06:01:22Z",
           "updatedAt": "2021-03-04T06:01:22Z"
+        }
+      ]
+    },
+    {
+      "number": 827,
+      "id": "MDU6SXNzdWU4MjQ0NTM4MjE=",
+      "title": "TRACE response format",
+      "url": "https://github.com/httpwg/http2-spec/issues/827",
+      "state": "OPEN",
+      "author": "reschke",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "With the resolution of https://github.com/httpwg/http-core/issues/690, http wire formats can use a response format other than \"message/http\".\r\n\r\nHowever, the SHOULD-level requirement:\r\n\r\n> The final recipient of the request SHOULD reflect the message received, excluding some fields described below, back to the client as the content of a 200 (OK) response.\r\n\r\nis still present. What response format should an h2 server use? ",
+      "createdAt": "2021-03-08T11:08:26Z",
+      "updatedAt": "2021-03-08T18:14:07Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "Lukasa",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I think the SHOULD remains applicable here. We don't have a sensible alternative format to recommend for h2. If the WG wishes to work on one, we can update the document in future, but for now we inherit the -semantics SHOULD.",
+          "createdAt": "2021-03-08T13:20:16Z",
+          "updatedAt": "2021-03-08T13:20:16Z"
+        },
+        {
+          "author": "reschke",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Well, you're not supposed to override a requirement from the core spec in any case.\r\n\r\nWhat I was trying to say is that, when looking at this pedantically, you currently can't have a conforming H2 server with TRACE support.  \r\n\r\nYou *could*:\r\n\r\n- state that TRACE does not work in H2, or\r\n- define how to map a received H2 message onto message/http (things to look for obviously are protocol version numbers, and how to map pseudo header fields back to the HTTP/1.1 message format)",
+          "createdAt": "2021-03-08T14:18:42Z",
+          "updatedAt": "2021-03-08T14:18:42Z"
+        },
+        {
+          "author": "Lukasa",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Both of those sound unfortunate. Stating that TRACE doesn't work in h2 rather defeats the point of having TRACE in -semantics to begin with. Defining a mapping back to message/http, or alternatively defining a new mapping, is probably more work than we really wanted to take on with this revision.\r\n\r\nWould it be sufficient to simply say that in response to a TRACE request a conforming H2 implementation MAY translate to message/http in whatever way it sees fit, or alternatively MAY refuse to serve the response?",
+          "createdAt": "2021-03-08T16:11:49Z",
+          "updatedAt": "2021-03-08T16:11:49Z"
+        },
+        {
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Not wanting to [toot my own horn](https://unicorn-wg.github.io/oblivious-http/draft-thomson-http-binary-message.html), but there could be other options.  I would prefer message/http over it not working in h2.  But the point here is that ANY format can work.  As this has a media type, we should be comfortable with any of the usual vagueness that exists around formats in HTTP.  Suggesting message/http doesn't mean you take a normative dependency on it.",
+          "createdAt": "2021-03-08T18:14:07Z",
+          "updatedAt": "2021-03-08T18:14:07Z"
         }
       ]
     }
