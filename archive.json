@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2021-03-09T00:47:22.266078+00:00",
+  "timestamp": "2021-03-11T00:47:49.504327+00:00",
   "repo": "httpwg/http2-spec",
   "labels": [
     {
@@ -18995,7 +18995,7 @@
       "labels": [],
       "body": "With the resolution of https://github.com/httpwg/http-core/issues/690, http wire formats can use a response format other than \"message/http\".\r\n\r\nHowever, the SHOULD-level requirement:\r\n\r\n> The final recipient of the request SHOULD reflect the message received, excluding some fields described below, back to the client as the content of a 200 (OK) response.\r\n\r\nis still present. What response format should an h2 server use? ",
       "createdAt": "2021-03-08T11:08:26Z",
-      "updatedAt": "2021-03-08T18:14:07Z",
+      "updatedAt": "2021-03-09T12:04:02Z",
       "closedAt": null,
       "comments": [
         {
@@ -19025,6 +19025,20 @@
           "body": "Not wanting to [toot my own horn](https://unicorn-wg.github.io/oblivious-http/draft-thomson-http-binary-message.html), but there could be other options.  I would prefer message/http over it not working in h2.  But the point here is that ANY format can work.  As this has a media type, we should be comfortable with any of the usual vagueness that exists around formats in HTTP.  Suggesting message/http doesn't mean you take a normative dependency on it.",
           "createdAt": "2021-03-08T18:14:07Z",
           "updatedAt": "2021-03-08T18:14:07Z"
+        },
+        {
+          "author": "Lukasa",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "So do we just say \"Yes, TRACE works, message/http is a SHOULD but we won't tell you how to convert it because Martin isn't done yet\"? (We may editorialise the last bit of that sentence)",
+          "createdAt": "2021-03-09T09:05:33Z",
+          "updatedAt": "2021-03-09T09:05:33Z"
+        },
+        {
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I would prefer \"Can use any format.  By the way, message/http exists.\"",
+          "createdAt": "2021-03-09T12:04:02Z",
+          "updatedAt": "2021-03-09T12:04:02Z"
         }
       ]
     }
