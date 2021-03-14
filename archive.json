@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2021-03-11T00:47:49.504327+00:00",
+  "timestamp": "2021-03-14T00:50:46.724159+00:00",
   "repo": "httpwg/http2-spec",
   "labels": [
     {
@@ -19039,6 +19039,79 @@
           "body": "I would prefer \"Can use any format.  By the way, message/http exists.\"",
           "createdAt": "2021-03-09T12:04:02Z",
           "updatedAt": "2021-03-09T12:04:02Z"
+        }
+      ]
+    },
+    {
+      "number": 828,
+      "id": "MDU6SXNzdWU4MjkyMjg5Njg=",
+      "title": "incorrect requirements for pseudo header field mapping for asterisk form",
+      "url": "https://github.com/httpwg/http2-spec/issues/828",
+      "state": "OPEN",
+      "author": "reschke",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "I'm struggling with <https://greenbytes.de/tech/webdav/rfc7540.html#HttpRequest>:\r\n\r\n> The :authority pseudo-header field includes the authority portion of the target URI ([RFC3986], Section 3.2). The authority MUST NOT include the deprecated userinfo subcomponent for http or https schemed URIs.\r\n>\r\n> To ensure that the HTTP/1.1 request line can be reproduced accurately, this pseudo-header field MUST be omitted when translating from an HTTP/1.1 request that has a request target in origin or asterisk form (see [RFC7230], Section 5.3).\r\n\r\nIf I have\r\n\r\n~~~\r\n  OPTIONS * HTTP/1.1\r\n  Host: example.com\r\n~~~\r\n\r\nand wanted to map this to H2, why would I omit \":authority\" here?\r\n\r\nWild guess: the spec should say \"origin or authority form\", not \"origin or asterisk form\"? ",
+      "createdAt": "2021-03-11T14:54:59Z",
+      "updatedAt": "2021-03-12T10:28:41Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "Lukasa",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "It definitely shouldn't say \"origin or authority form\". Authority form is well-covered by the spec: the `:path` pseudo-header absolutely may not contain the authority component of the target URI, so if it isn't put into the `:authority` pseudo-header it has nowhere to go and would be lost.\r\n\r\nFor asterisk form though I'm as much guessing as you are, but I can provide two alternative theories. The first is predicated on the use of the phrase \"target URI\". An OPTIONS request with a request target of `*` does not really _have_ a target URI for the `:authority` pseudo-header to carry the authority portion _of_. However, that's not terribly compelling, given that -semantics fairly heavily implies that `:authority` should just have whatever is in `Host` (which it cannot do for CONNECT requests and so we probably need to reword that text in -semantics?).\r\n\r\nThe _better_ argument is that `OPTIONS *` doesn't meaningfully act on a host at all. From -semantics 9.3.7:\r\n\r\n> An OPTIONS request with an asterisk (\"*\") as the request target (Section 7.1) applies to the server in general rather than to a specific resource.\r\n\r\nThe word here is \"server\", not \"origin\". It isn't clear that the -semantics specification envisages the possibility that a server may care what the value of the `Host` header is when responding to this request.\r\n\r\nWith that said, I do think we need to clarify, perhaps with the WG, whether the Host: header is expected to be meaningful for `OPTIONS *`. If it is, we clearly need to either allow it in the `:authority` pseudo-header or provide guidance that you should put it in `Host` (for some weird reason).",
+          "createdAt": "2021-03-11T16:03:18Z",
+          "updatedAt": "2021-03-11T16:03:18Z"
+        },
+        {
+          "author": "reschke",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "\"OPTIONS *\" indeed is weird, and it would be great if we could get rid of it. But we can't.\r\n\r\nThe core spec does not state that \"OPTIONS *\" can not vary on \"Host\", so there may be cases where it does. So I believe H2 needs to describe the mapping for that case.",
+          "createdAt": "2021-03-11T16:22:26Z",
+          "updatedAt": "2021-03-11T16:22:26Z"
+        },
+        {
+          "author": "Lukasa",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I think if we're happy with the idea that `OPTIONS *` can vary on `Host` then the obvious change is to just delete \"or asterisk\" from the text cited in the original post.",
+          "createdAt": "2021-03-11T16:38:21Z",
+          "updatedAt": "2021-03-11T16:38:21Z"
+        },
+        {
+          "author": "reschke",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Awesome :-)",
+          "createdAt": "2021-03-11T17:40:31Z",
+          "updatedAt": "2021-03-11T17:40:31Z"
+        },
+        {
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Yes, I think that would be the best outcome.  Using `:authority` is consistent with other h2 usage.\r\n\r\nThough as @mnot noted privately, the fact that this question has not arisen might be evidence that `OPTIONS *` is less widely implemented than we thought.",
+          "createdAt": "2021-03-12T04:55:51Z",
+          "updatedAt": "2021-03-12T04:55:51Z"
+        },
+        {
+          "author": "Lukasa",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Hang on hang on hang on. When I was writing the patch I went to double-check the citations and got very confused. The current text reads:\r\n\r\n> To ensure that the HTTP/1.1 request line can be reproduced accurately, this pseudo-header field MUST be omitted when translating from an HTTP/1.1 request that has a request target in origin or asterisk form (see [RFC7230], Section 5.3).\r\n\r\nReproducing from the current -messaging draft, here are the definitions of the request target forms:\r\n\r\n> The most common form of request-target is the origin-form.\r\n>\r\n>     origin-form    = absolute-path [ \"?\" query ]\r\n\r\n> When making a request to a proxy, other than a CONNECT or server-wide OPTIONS request (as detailed below), a client must send the target URI in absolute-form as the request-target.\r\n>\r\n>     absolute-form  = absolute-URI\r\n\r\n> The authority-form of request-target is only used for CONNECT requests (Section 9.3.6 of [Semantics]).\r\n>\r\n>     authority-form = authority\r\n\r\n> The asterisk-form of request-target is only used for a server-wide OPTIONS request (Section 9.3.7 of [Semantics]).\r\n>\r\n>    asterisk-form  = \"*\"\r\n\r\nThe original draft says that you should only produce an `:authority` pseudo-header field _when forwarding a HTTP/1.1 request_ in the cases where the _request target_ normally had an authority within it, either in the absolute-form case or the authority-form case.\r\n\r\nI think then the original text is right, just confusing, and made more confusing by the fact that it's followed by a line talking about clients that generate HTTP/2 requests directly that makes no sense.\r\n\r\nWhat the original text is trying to say, I think, is that in HTTP/1.1 the maximum number of authorities that may be present in control data is two: one in the request target and one in the (mandatory) Host header. This can only happen for requests which use absolute-form or authority-form: for requests that use origin-form or asterisk-form they will only have had one in the Host header.\r\n\r\nThe implication here then is that there is nothing wrong with sending `:authority` for an `OPTIONS *` request, but only if you started out speaking HTTP/2. If you were forwarding a HTTP/1.1 request then you should leave the authority in the Host component. This is intended to make it easier to reconstruct the request at the end: you don't have to look at the `:method` and `:path` to decode it appropriately.\r\n\r\nWhat makes this awkward is that the defensiveness is partially unnecessary. -messaging says:\r\n\r\n> A client MUST send a Host header field in all HTTP/1.1 request messages. If the target URI includes an authority component, then a client MUST send a field value for Host that is identical to that authority component, excluding any userinfo subcomponent and its \"@\" delimiter (Section 4.2.1 of [Semantics]).\r\n\r\nThis means that in the case of `authority-form` the `:authority` and `Host` headers MUST be identical (the `authority-form` also forbids the userinfo subcomponent). The restriction doesn't really make sense here: we could have absolutely collapsed this into `:authority`.\r\n\r\nUnfortunately, -messaging does still leave an out in the case of `absolute-form` request targets, where everyone is required to ignore the Host header field. This probably justifies leaving that case at the very least.\r\n\r\nTo sum up then, I think the text is right, but may want clarification.",
+          "createdAt": "2021-03-12T09:12:10Z",
+          "updatedAt": "2021-03-12T09:12:10Z"
+        },
+        {
+          "author": "reschke",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Hmmm.\r\n\r\nWe have 1.:\r\n\r\n> To ensure that the HTTP/1.1 request line can be reproduced accurately, this pseudo-header field MUST be omitted when translating from an HTTP/1.1 request that has a request target in origin or asterisk form (see [RFC7230], Section 5.3). \r\n\r\nand 2.:\r\n\r\n> All HTTP/2 requests MUST include exactly one valid value for the :method, :scheme, and :path pseudo-header fields, unless it is a CONNECT request (Section 8.3).\r\n\r\nAren't these two in conflict for \"OPTIONS *\"?",
+          "createdAt": "2021-03-12T09:38:21Z",
+          "updatedAt": "2021-03-12T09:38:21Z"
+        },
+        {
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "body": "So as @Lukasa says, the important qualification here is that this applies only to translation from HTTP/1.1.  I missed that important point.  If you are newly creating an HTTP/2 request then you can use :authority.\r\n\r\nWhat is awkward here is that we don't really say what to do about :scheme for asterisk form requests.  It would be reasonable to assume that it takes on the default value (https) from a translated request and that it is also set to the same (https) when the h2 request is created directly.  But it doesn't really *say* that directly.  Clarification on this point would be welcome.",
+          "createdAt": "2021-03-12T10:28:41Z",
+          "updatedAt": "2021-03-12T10:28:41Z"
         }
       ]
     }
