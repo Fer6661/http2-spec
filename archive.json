@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2021-03-14T00:50:46.724159+00:00",
+  "timestamp": "2021-03-18T00:48:47.785655+00:00",
   "repo": "httpwg/http2-spec",
   "labels": [
     {
@@ -19114,6 +19114,22 @@
           "updatedAt": "2021-03-12T10:28:41Z"
         }
       ]
+    },
+    {
+      "number": 829,
+      "id": "MDU6SXNzdWU4MzMyNTc4NDk=",
+      "title": "\"Parameters\" in IANA registries",
+      "url": "https://github.com/httpwg/http2-spec/issues/829",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "From IANA:\r\n\r\n> In recent years we've suggested omitting the word \"Parameters\" when creating a set of registries, but because the name of the HTTP/2 group uses it, we'll leave it in place unless you prefer otherwise.\r\n\r\nAs we have the patient open already, it might be OK to change the registry name to follow modern conventions.",
+      "createdAt": "2021-03-16T22:58:58Z",
+      "updatedAt": "2021-03-16T22:58:58Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
