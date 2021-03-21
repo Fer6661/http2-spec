@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2021-03-18T00:48:47.785655+00:00",
+  "timestamp": "2021-03-21T00:52:01.306851+00:00",
   "repo": "httpwg/http2-spec",
   "labels": [
     {
@@ -19054,7 +19054,7 @@
       "labels": [],
       "body": "I'm struggling with <https://greenbytes.de/tech/webdav/rfc7540.html#HttpRequest>:\r\n\r\n> The :authority pseudo-header field includes the authority portion of the target URI ([RFC3986], Section 3.2). The authority MUST NOT include the deprecated userinfo subcomponent for http or https schemed URIs.\r\n>\r\n> To ensure that the HTTP/1.1 request line can be reproduced accurately, this pseudo-header field MUST be omitted when translating from an HTTP/1.1 request that has a request target in origin or asterisk form (see [RFC7230], Section 5.3).\r\n\r\nIf I have\r\n\r\n~~~\r\n  OPTIONS * HTTP/1.1\r\n  Host: example.com\r\n~~~\r\n\r\nand wanted to map this to H2, why would I omit \":authority\" here?\r\n\r\nWild guess: the spec should say \"origin or authority form\", not \"origin or asterisk form\"? ",
       "createdAt": "2021-03-11T14:54:59Z",
-      "updatedAt": "2021-03-12T10:28:41Z",
+      "updatedAt": "2021-03-19T18:45:43Z",
       "closedAt": null,
       "comments": [
         {
@@ -19112,6 +19112,27 @@
           "body": "So as @Lukasa says, the important qualification here is that this applies only to translation from HTTP/1.1.  I missed that important point.  If you are newly creating an HTTP/2 request then you can use :authority.\r\n\r\nWhat is awkward here is that we don't really say what to do about :scheme for asterisk form requests.  It would be reasonable to assume that it takes on the default value (https) from a translated request and that it is also set to the same (https) when the h2 request is created directly.  But it doesn't really *say* that directly.  Clarification on this point would be welcome.",
           "createdAt": "2021-03-12T10:28:41Z",
           "updatedAt": "2021-03-12T10:28:41Z"
+        },
+        {
+          "author": "Lukasa",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "@reschke I think 2. is flat out wrong and should be amended, it is not in line with the rest of the spec.",
+          "createdAt": "2021-03-19T18:22:11Z",
+          "updatedAt": "2021-03-19T18:22:11Z"
+        },
+        {
+          "author": "Lukasa",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Nope, it isn't wrong, it's fine. 1. discusses `:authority`, 2. discusses `:method`, `:path`, and `:scheme`.",
+          "createdAt": "2021-03-19T18:29:52Z",
+          "updatedAt": "2021-03-19T18:29:52Z"
+        },
+        {
+          "author": "Lukasa",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "> What is awkward here is that we don't really say what to do about :scheme for asterisk form requests. It would be reasonable to assume that it takes on the default value (https) from a translated request and that it is also set to the same (https) when the h2 request is created directly. But it doesn't really say that directly. Clarification on this point would be welcome.\r\n\r\nAfter trying to construct wording for this I came to the conclusion that this is harder than it might seem. What actually _is_ the scheme for a request in asterisk form? Not in HTTP/2, but what answer would we give if we were writing this for -semantics? I think this is the lens through which I want to word this in the spec, and I don't know that I have a good answer.",
+          "createdAt": "2021-03-19T18:45:43Z",
+          "updatedAt": "2021-03-19T18:45:43Z"
         }
       ]
     },
@@ -19127,9 +19148,17 @@
       "labels": [],
       "body": "From IANA:\r\n\r\n> In recent years we've suggested omitting the word \"Parameters\" when creating a set of registries, but because the name of the HTTP/2 group uses it, we'll leave it in place unless you prefer otherwise.\r\n\r\nAs we have the patient open already, it might be OK to change the registry name to follow modern conventions.",
       "createdAt": "2021-03-16T22:58:58Z",
-      "updatedAt": "2021-03-16T22:58:58Z",
+      "updatedAt": "2021-03-19T18:48:56Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "Lukasa",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "To clarify, IANA would like us to delete the word \"Parameters\" from the following text?\r\n\r\n> These new registries appear in the new \"Hypertext\r\n>  Transfer Protocol version 2 (HTTP/2) Parameters\" section.\r\n",
+          "createdAt": "2021-03-19T18:48:56Z",
+          "updatedAt": "2021-03-19T18:48:56Z"
+        }
+      ]
     }
   ],
   "pulls": [
