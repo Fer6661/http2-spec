@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2021-03-21T00:52:01.306851+00:00",
+  "timestamp": "2021-03-23T00:49:13.957811+00:00",
   "repo": "httpwg/http2-spec",
   "labels": [
     {
@@ -19054,7 +19054,7 @@
       "labels": [],
       "body": "I'm struggling with <https://greenbytes.de/tech/webdav/rfc7540.html#HttpRequest>:\r\n\r\n> The :authority pseudo-header field includes the authority portion of the target URI ([RFC3986], Section 3.2). The authority MUST NOT include the deprecated userinfo subcomponent for http or https schemed URIs.\r\n>\r\n> To ensure that the HTTP/1.1 request line can be reproduced accurately, this pseudo-header field MUST be omitted when translating from an HTTP/1.1 request that has a request target in origin or asterisk form (see [RFC7230], Section 5.3).\r\n\r\nIf I have\r\n\r\n~~~\r\n  OPTIONS * HTTP/1.1\r\n  Host: example.com\r\n~~~\r\n\r\nand wanted to map this to H2, why would I omit \":authority\" here?\r\n\r\nWild guess: the spec should say \"origin or authority form\", not \"origin or asterisk form\"? ",
       "createdAt": "2021-03-11T14:54:59Z",
-      "updatedAt": "2021-03-19T18:45:43Z",
+      "updatedAt": "2021-03-21T23:05:30Z",
       "closedAt": null,
       "comments": [
         {
@@ -19133,6 +19133,13 @@
           "body": "> What is awkward here is that we don't really say what to do about :scheme for asterisk form requests. It would be reasonable to assume that it takes on the default value (https) from a translated request and that it is also set to the same (https) when the h2 request is created directly. But it doesn't really say that directly. Clarification on this point would be welcome.\r\n\r\nAfter trying to construct wording for this I came to the conclusion that this is harder than it might seem. What actually _is_ the scheme for a request in asterisk form? Not in HTTP/2, but what answer would we give if we were writing this for -semantics? I think this is the lens through which I want to word this in the spec, and I don't know that I have a good answer.",
           "createdAt": "2021-03-19T18:45:43Z",
           "updatedAt": "2021-03-19T18:45:43Z"
+        },
+        {
+          "author": "martinthomson",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I was going to say that for `:scheme` we open an issue on -semantics, but conclude that the scheme was `https`.  Nothing else really makes sense.  \r\n\r\n`CONNECT` is funny in a deliberate fashion (as Erik Nygren points out, the target of a `CONNECT` isn't a resource that is controlled by the thing that serves the request, which makes for all sorts of awkward).  So maybe it gets a pass for being old and strange.\r\n\r\nOn the other hand, I don't see why `OPTIONS *` needs to be exempt from this; it's just a request for an HTTP resource that can't be identified with a URI because it doesn't have a path component (or query, or fragment).",
+          "createdAt": "2021-03-21T23:05:30Z",
+          "updatedAt": "2021-03-21T23:05:30Z"
         }
       ]
     },
@@ -19159,6 +19166,22 @@
           "updatedAt": "2021-03-19T18:48:56Z"
         }
       ]
+    },
+    {
+      "number": 831,
+      "id": "MDU6SXNzdWU4MzczMjcwOTA=",
+      "title": "Setting :scheme for OPTIONS *",
+      "url": "https://github.com/httpwg/http2-spec/issues/831",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "See the discussion in #828 and httpwg/http-core#801.\r\n\r\nWe need to explain what to put here.  We never said anything before.",
+      "createdAt": "2021-03-22T05:21:59Z",
+      "updatedAt": "2021-03-22T05:21:59Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
@@ -31671,6 +31694,146 @@
           "createdAt": "2021-02-23T23:10:33Z",
           "updatedAt": "2021-02-23T23:10:33Z",
           "comments": []
+        }
+      ]
+    },
+    {
+      "number": 830,
+      "id": "MDExOlB1bGxSZXF1ZXN0NTk3Njc1NDQ2",
+      "title": "Rewrite :authority description",
+      "url": "https://github.com/httpwg/http2-spec/pull/830",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "I think that this is better, but I'd like input on that.\r\n\r\nI've tried to simplify this into 3 chunks:\r\n\r\n* requests generated natively in HTTP/2\r\n* translating HTTP/1.1 -> HTTP/2\r\n* translating HTTP/2 -> HTTP/1.1\r\n\r\nI realized that absolute-form was underserved here.  I could have\r\nexcluded it on the basis that it is special, but the rules seemed fairly\r\nclear - at least regarding :authority, so that went in too.\r\n\r\nThe text now deals more fully with absolute form.  The previous text\r\nreally only hinted at the possibility that there might be two values.\r\nThis points to -messaging for what to do about those two values (hint:\r\n:authority wins).\r\n\r\nCloses #828.",
+      "createdAt": "2021-03-22T05:18:41Z",
+      "updatedAt": "2021-03-22T09:04:24Z",
+      "baseRepository": "httpwg/http2-spec",
+      "baseRefName": "main",
+      "baseRefOid": "8817a822817063daa3fbd8cc6b5ef16155c42341",
+      "headRepository": "martinthomson/http2v2",
+      "headRefName": "pseudo-mapping-creation",
+      "headRefOid": "b615f32e0aa27b991e6d1642634f837e753a36f7",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NjE3MjE2NTcw",
+          "commit": {
+            "abbreviatedOid": "b615f32"
+          },
+          "author": "reschke",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "This looks good overall.\r\n\r\nAs a separate task once the changes are in I would recommend considering to have obe sub section per pseudo header field (and maybe combine request/response behaviour in the same place).",
+          "createdAt": "2021-03-22T07:38:57Z",
+          "updatedAt": "2021-03-22T07:38:57Z",
+          "comments": []
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NjE3MjgxNjUz",
+          "commit": {
+            "abbreviatedOid": "b615f32"
+          },
+          "author": "Lukasa",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "LGTM. I agree with @reschke that separate sections for these pseudo-headers would be good.",
+          "createdAt": "2021-03-22T09:04:24Z",
+          "updatedAt": "2021-03-22T09:04:24Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 832,
+      "id": "MDExOlB1bGxSZXF1ZXN0NTk3NjgzMjky",
+      "title": ":scheme is just the scheme",
+      "url": "https://github.com/httpwg/http2-spec/pull/832",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "This is either taken from the target URI, or translated in (S3.3 of\r\n-messaging).  Unless it is CONNECT where is is absent.\r\n\r\nCloses #831.",
+      "createdAt": "2021-03-22T05:33:12Z",
+      "updatedAt": "2021-03-22T08:59:03Z",
+      "baseRepository": "httpwg/http2-spec",
+      "baseRefName": "main",
+      "baseRefOid": "8817a822817063daa3fbd8cc6b5ef16155c42341",
+      "headRepository": "martinthomson/http2v2",
+      "headRefName": "what-scheme",
+      "headRefOid": "827bc70395c67277b7238448f6493ce8f7985244",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NjE3Mjc2NjQ3",
+          "commit": {
+            "abbreviatedOid": "827bc70"
+          },
+          "author": "Lukasa",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "Seems reasonable to me.",
+          "createdAt": "2021-03-22T08:59:03Z",
+          "updatedAt": "2021-03-22T08:59:03Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 833,
+      "id": "MDExOlB1bGxSZXF1ZXN0NTk3Njg5MDY5",
+      "title": "SETTINGS_ENABLE_PUSH from the server",
+      "url": "https://github.com/httpwg/http2-spec/pull/833",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "The previous text implied that a value of 1 was a problem,\r\nwhich was somewhat in tension with the default being 1 and servers\r\nmostly not sending the setting.  So clearly what was being checked by\r\nclient was the frame, not the value.  This changes to checking the\r\nsetting as it arrives, changes where that text lives.\r\n\r\nAlso, this changes from \"endpoint\" to \"client\" or \"server\" as\r\nappropriate to match actual practice.\r\n\r\nCloses #793.",
+      "createdAt": "2021-03-22T05:45:06Z",
+      "updatedAt": "2021-03-22T09:01:25Z",
+      "baseRepository": "httpwg/http2-spec",
+      "baseRefName": "main",
+      "baseRefOid": "8817a822817063daa3fbd8cc6b5ef16155c42341",
+      "headRepository": "martinthomson/http2v2",
+      "headRefName": "client-enable-push",
+      "headRefOid": "2b9e4fb9de29fa8f698b2ba5b4b6f2b356d55cc1",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NjE3Mjc4MzMy",
+          "commit": {
+            "abbreviatedOid": "2b9e4fb"
+          },
+          "author": "Lukasa",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "One minor language nit, otherwise seems great.",
+          "createdAt": "2021-03-22T09:00:52Z",
+          "updatedAt": "2021-03-22T09:01:25Z",
+          "comments": [
+            {
+              "originalPosition": 28,
+              "body": "Nit: I think \"always\" is redundant here.",
+              "createdAt": "2021-03-22T09:00:52Z",
+              "updatedAt": "2021-03-22T09:01:25Z"
+            }
+          ]
         }
       ]
     }
