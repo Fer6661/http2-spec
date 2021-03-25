@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2021-03-23T00:49:13.957811+00:00",
+  "timestamp": "2021-03-25T00:28:52.569269+00:00",
   "repo": "httpwg/http2-spec",
   "labels": [
     {
@@ -19182,6 +19182,24 @@
       "updatedAt": "2021-03-22T05:21:59Z",
       "closedAt": null,
       "comments": []
+    },
+    {
+      "number": 834,
+      "id": "MDU6SXNzdWU4MzkyMzcxODU=",
+      "title": "Use subsections not bullets for pseudo-header field descriptions",
+      "url": "https://github.com/httpwg/http2-spec/issues/834",
+      "state": "OPEN",
+      "author": "martinthomson",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [
+        "editorial"
+      ],
+      "body": "These are getting a little unwieldy as list items, so it is probably time to consider an addressable section for each.",
+      "createdAt": "2021-03-24T00:41:42Z",
+      "updatedAt": "2021-03-24T00:41:42Z",
+      "closedAt": null,
+      "comments": []
     }
   ],
   "pulls": [
@@ -31802,13 +31820,13 @@
       "labels": [],
       "body": "The previous text implied that a value of 1 was a problem,\r\nwhich was somewhat in tension with the default being 1 and servers\r\nmostly not sending the setting.  So clearly what was being checked by\r\nclient was the frame, not the value.  This changes to checking the\r\nsetting as it arrives, changes where that text lives.\r\n\r\nAlso, this changes from \"endpoint\" to \"client\" or \"server\" as\r\nappropriate to match actual practice.\r\n\r\nCloses #793.",
       "createdAt": "2021-03-22T05:45:06Z",
-      "updatedAt": "2021-03-22T09:01:25Z",
+      "updatedAt": "2021-03-24T00:40:18Z",
       "baseRepository": "httpwg/http2-spec",
       "baseRefName": "main",
       "baseRefOid": "8817a822817063daa3fbd8cc6b5ef16155c42341",
       "headRepository": "martinthomson/http2v2",
       "headRefName": "client-enable-push",
-      "headRefOid": "2b9e4fb9de29fa8f698b2ba5b4b6f2b356d55cc1",
+      "headRefOid": "0aeb362d3e36c672e94c5f4d3605636096a95551",
       "closedAt": null,
       "mergedAt": null,
       "mergedBy": null,
@@ -31831,7 +31849,7 @@
               "originalPosition": 28,
               "body": "Nit: I think \"always\" is redundant here.",
               "createdAt": "2021-03-22T09:00:52Z",
-              "updatedAt": "2021-03-22T09:01:25Z"
+              "updatedAt": "2021-03-24T00:40:18Z"
             }
           ]
         }
