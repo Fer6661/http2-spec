@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2021-03-25T00:28:52.569269+00:00",
+  "timestamp": "2021-04-01T01:03:56.322288+00:00",
   "repo": "httpwg/http2-spec",
   "labels": [
     {
@@ -19054,7 +19054,7 @@
       "labels": [],
       "body": "I'm struggling with <https://greenbytes.de/tech/webdav/rfc7540.html#HttpRequest>:\r\n\r\n> The :authority pseudo-header field includes the authority portion of the target URI ([RFC3986], Section 3.2). The authority MUST NOT include the deprecated userinfo subcomponent for http or https schemed URIs.\r\n>\r\n> To ensure that the HTTP/1.1 request line can be reproduced accurately, this pseudo-header field MUST be omitted when translating from an HTTP/1.1 request that has a request target in origin or asterisk form (see [RFC7230], Section 5.3).\r\n\r\nIf I have\r\n\r\n~~~\r\n  OPTIONS * HTTP/1.1\r\n  Host: example.com\r\n~~~\r\n\r\nand wanted to map this to H2, why would I omit \":authority\" here?\r\n\r\nWild guess: the spec should say \"origin or authority form\", not \"origin or asterisk form\"? ",
       "createdAt": "2021-03-11T14:54:59Z",
-      "updatedAt": "2021-03-21T23:05:30Z",
+      "updatedAt": "2021-03-31T23:32:58Z",
       "closedAt": null,
       "comments": [
         {
@@ -19140,6 +19140,13 @@
           "body": "I was going to say that for `:scheme` we open an issue on -semantics, but conclude that the scheme was `https`.  Nothing else really makes sense.  \r\n\r\n`CONNECT` is funny in a deliberate fashion (as Erik Nygren points out, the target of a `CONNECT` isn't a resource that is controlled by the thing that serves the request, which makes for all sorts of awkward).  So maybe it gets a pass for being old and strange.\r\n\r\nOn the other hand, I don't see why `OPTIONS *` needs to be exempt from this; it's just a request for an HTTP resource that can't be identified with a URI because it doesn't have a path component (or query, or fragment).",
           "createdAt": "2021-03-21T23:05:30Z",
           "updatedAt": "2021-03-21T23:05:30Z"
+        },
+        {
+          "author": "mnot",
+          "authorAssociation": "MEMBER",
+          "body": "Just popping up a level -- h2bis should describe whatever it needs to here in terms of Semantics, not Messaging. If it needs to refer to 1.1 specifically, something's broken.",
+          "createdAt": "2021-03-31T23:32:58Z",
+          "updatedAt": "2021-03-31T23:32:58Z"
         }
       ]
     },
@@ -19152,10 +19159,12 @@
       "author": "martinthomson",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
-      "labels": [],
+      "labels": [
+        "editorial"
+      ],
       "body": "From IANA:\r\n\r\n> In recent years we've suggested omitting the word \"Parameters\" when creating a set of registries, but because the name of the HTTP/2 group uses it, we'll leave it in place unless you prefer otherwise.\r\n\r\nAs we have the patient open already, it might be OK to change the registry name to follow modern conventions.",
       "createdAt": "2021-03-16T22:58:58Z",
-      "updatedAt": "2021-03-19T18:48:56Z",
+      "updatedAt": "2021-03-31T23:30:25Z",
       "closedAt": null,
       "comments": [
         {
@@ -31854,6 +31863,32 @@
           ]
         }
       ]
+    },
+    {
+      "number": 835,
+      "id": "MDExOlB1bGxSZXF1ZXN0NjA2NjE2NTc0",
+      "title": "Server Push caveats",
+      "url": "https://github.com/httpwg/http2-spec/pull/835",
+      "state": "OPEN",
+      "author": "mnot",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "Fixes #786 ",
+      "createdAt": "2021-04-01T00:35:32Z",
+      "updatedAt": "2021-04-01T00:35:32Z",
+      "baseRepository": "httpwg/http2-spec",
+      "baseRefName": "main",
+      "baseRefOid": "8817a822817063daa3fbd8cc6b5ef16155c42341",
+      "headRepository": "mnot/http2-spec",
+      "headRefName": "mnot-786",
+      "headRefOid": "eb954797b9096a94fec06ca67fa32a4b0f5329f3",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
     }
   ]
 }
