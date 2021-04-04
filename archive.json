@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2021-04-01T01:03:56.322288+00:00",
+  "timestamp": "2021-04-04T01:05:21.180002+00:00",
   "repo": "httpwg/http2-spec",
   "labels": [
     {
@@ -31876,7 +31876,7 @@
       "labels": [],
       "body": "Fixes #786 ",
       "createdAt": "2021-04-01T00:35:32Z",
-      "updatedAt": "2021-04-01T00:35:32Z",
+      "updatedAt": "2021-04-01T07:29:51Z",
       "baseRepository": "httpwg/http2-spec",
       "baseRefName": "main",
       "baseRefOid": "8817a822817063daa3fbd8cc6b5ef16155c42341",
@@ -31888,7 +31888,21 @@
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NjI1OTczMjk2",
+          "commit": {
+            "abbreviatedOid": "eb95479"
+          },
+          "author": "Lukasa",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "LGTM",
+          "createdAt": "2021-04-01T07:29:51Z",
+          "updatedAt": "2021-04-01T07:29:51Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
